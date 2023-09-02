@@ -85,8 +85,8 @@ router.get("/dogs", async (req , res)=>{
     }
     else {
       let id = 0;
-      
-      allData = allData.map( e =>{
+
+      allData.map( e =>{
         if (!e.hasOwnProperty("reference_image_id")){
           id++;
           e.reference_image_id = id
