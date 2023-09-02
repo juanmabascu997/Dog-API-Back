@@ -43,7 +43,7 @@ router.get("/dogs", async (req , res)=>{
         }
         return 0;
     });
-    
+
     if (req.query.name && req.query.name.length > 1) {
           let arr= await fetch(`https://api.thedogapi.com/v1/breeds/search?q=${req.query.name}`).then(res => res.json())
           let id = 0
@@ -82,7 +82,28 @@ router.get("/dogs", async (req , res)=>{
           if(!allSearch) return res.status(400).json("Error")
           return res.status(200).json(allSearch)
       
-  }
+    }
+    else {
+      let id = 0;
+      
+      allData = allData.map( e =>{
+        if (!e.hasOwnProperty("reference_image_id")){
+          id++;
+          e.reference_image_id = id
+          e.image = {
+            id: id,
+            width: 1216,
+            height: 1131,
+            url: "https://www.publicdomainpictures.net/pictures/280000/nahled/not-found-image-15383864787lu.jpg"
+          }
+        } else{
+          e.image = {
+            url: `https://cdn2.thedogapi.com/images/${e.reference_image_id}.jpg`
+          }
+        }
+    })
+    
+    }
   return res.status(200).json(allData);
 });
 
